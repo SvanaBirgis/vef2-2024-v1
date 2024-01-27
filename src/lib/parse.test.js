@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { parseTeamsJson } from './parse';
+import { parseGameJson, parseTeamsJson } from './parse';
 
 describe('parse', () => {
   describe.only('parseTeamsJson', () => {
@@ -8,3 +8,13 @@ describe('parse', () => {
     });
   });
 });
+
+
+describe('parse', () => {
+  describe.only('parseGameJson', () => {
+    it('should have a test', () => {
+      expect(parseGameJson('{}')).toEqual({});
+    });
+  });
+});
+
