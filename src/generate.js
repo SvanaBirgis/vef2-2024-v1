@@ -1,3 +1,8 @@
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
+import { indexTemplate, leikirTemplate, stodurTemplate } from './lib/html.js';
+
+
 import {
   createDirIfNotExists,
   readFile,
@@ -64,6 +69,61 @@ async function main() {
       //console.log(game)
     })
   }
+
+  legalGamedays.sort(function (x, y) {
+    if (x.date < y.date) {
+      return -1;
+    }
+    if (x.date > y.date) {
+      return 1;
+    }
+    return 0;
+  });
+
+  // reikna stig fyrir hver lið
+  let pointsDict = {};
+  // ef legalGamedays[?].games[?].home.score !== legalGamedays[0].games[0].away.score 
+  legalGamedays.forEach(gameday => {
+    gameday.games.forEach(game => {
+      if (!pointsDict[game.home.name]) {
+        pointsDict[game.home.name] = 0
+      }
+      if (!pointsDict[game.away.name]) {
+        pointsDict[game.away.name] = 0
+      }
+      if (game.home.score > game.away.score) {
+        pointsDict[game.home.name] += 3
+      }
+      if (game.home.score < game.away.score) {
+        pointsDict[game.away.name] += 3
+      }
+      if (game.home.score == game.away.score) {
+        pointsDict[game.home.name] += 1
+        pointsDict[game.away.name] += 1
+      }
+      //console.log(game)
+    });
+    //console.log(gameday)
+  });
+  var sortedPoints = Object.keys(pointsDict).map(function (key) {
+    return [key, pointsDict[key]];
+  });
+
+  sortedPoints.sort(function (first, second) {
+    return second[1] - first[1];
+  });
+
+  await writeFile(join(OUTPUT_DIR, 'index.html'), indexTemplate(), {
+    flag: 'w+',
+  });
+
+  await writeFile(join(OUTPUT_DIR, 'leikir.html'), leikirTemplate(legalGamedays), {
+    flag: 'w+',
+  });
+
+  await writeFile(join(OUTPUT_DIR, 'stada.html'), stodurTemplate(sortedPoints), {
+    flag: 'w+',
+  });
 }
 
 function isTeamLegal(team) {
