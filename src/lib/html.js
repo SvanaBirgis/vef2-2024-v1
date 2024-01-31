@@ -80,14 +80,6 @@ export function leikdagurTemplate(gameday) {
   return ouput.join("");
 }
 
-/**
- * Generate a HTML string representing a department.
- *
- * @param {string} title title of the department
- * @param {string} description description of the department
- * @param {Array<Games>} Games list of courses
- * @returns {string} HTML string representing the department
- */
 export function leikirTemplate(Gamedays) {
   const leikir = `
   <h1> Leikjadagskrá </h1>

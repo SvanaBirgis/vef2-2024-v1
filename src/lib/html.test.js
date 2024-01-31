@@ -20,9 +20,7 @@ describe('html', () => {
   });
   describe('generate index template', () => {
     it('generates correct template', () => {
-      const result = indexTemplate([
-        { title: 'foo', html: 'bar.html', courses: [1] },
-      ]);
+      const result = indexTemplate([]);
 
       expect(result).toEqual(`<!doctype html>
 <html lang="is">
@@ -63,60 +61,54 @@ describe('html', () => {
   });
   describe('generate leikir template', () => {
     it('generates correct leikir template', () => {
-      const result = leikirTemplate("Gameday");
+      const result = leikirTemplate([]);
 
       expect(result).toEqual(`<!doctype html>
 <html lang="is">
   <head>
     <meta charset="utf-8">
-    <title>title</title>
+    <title>Leikir</title>
     <link rel="stylesheet" href="./public/styles.css">
     <script type="module" src="./public/scripts.js"></script>
   </head>
   <body>
-    <h1> Leikjadagskrá </h1>
-    <body>
-      <p></p>
-    </body>
-    <a href="./index.html">Til baka</a>
+  <h1> Leikjadagskrá </h1>
+  <body></body>
+  <a href="./index.html">Til baka</a>
   </body>
 </html>`);
     });
   });
   describe('generate stada template', () => {
     it('generates correct stada template', () => {
-      const result = stodurTemplate("stodur");
+      const result = stodurTemplate([]);
 
       expect(result).toEqual(`<!doctype html>
 <html lang="is">
   <head>
     <meta charset="utf-8">
-    <title>title</title>
+    <title>Stöðutafla</title>
     <link rel="stylesheet" href="./public/styles.css">
     <script type="module" src="./public/scripts.js"></script>
   </head>
   <body>
-    <h1> Stöðutaflan </h1>
-    <div class="table">
-    <table>
-      <thead>
-        <tr>
-          <th>Sæti</th>
-          <th>Lið</th>
-          <th>Stig</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <p><a href="./index.html">Til baka</a></p>
-  </div>
+  <h1> Stöðutaflan </h1>
+  <div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Sæti</th>
+        <th>Lið</th>
+        <th>Stig</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+</div>
+<p><a href="./index.html">Til baka</a></p>
+</div>
   </body>
 </html>`);
     });

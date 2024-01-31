@@ -33,11 +33,11 @@ export async function createDirIfNotExists(dir) {
  */
 export async function readFilesFromDir(dir) {
   let files = [];
-  // console.log('dir', dir);
+  //console.log('dir', dir);
   try {
     files = await readdir(dir);
   } catch (e) {
-    console.error('error', e);
+    //console.error('error', e);
     return [];
   }
 
