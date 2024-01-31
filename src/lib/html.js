@@ -26,7 +26,7 @@ export function template(title, content) {
 export function indexTemplate(leikir) {
   //index.html, forsíða sem hefur einhvern lýsingartexta (í versta falli lorem ipsum texta).
   const index = `
-  <h1> Title </h1>
+  <h1> Boltadeildin 2023 - 2024 </h1>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
   molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
   numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
@@ -51,7 +51,7 @@ export function indexTemplate(leikir) {
   <p><a href="leikir.html">Leikir</a></p>
   <p><a href="stada.html">Stöðutafla</a></p>
   `;
-  return template('Your Index Page Title', index);
+  return template('Boltadeildin', index);
 }
 
 /**
@@ -66,7 +66,7 @@ export function leikurTemplate(date, game) {
   const awayScore = game.away ? game.away.score : 'N/A';
 
   //leikir.html, síða sem birtir alla leiki í deildinni, raðaða eftir dagsetningu leiks (elsta dagsetning efst).
-  return `<li>${date} - ${homeName}: ${homeScore} vs. ${awayName}: ${awayScore} </li>`;
+  return `<p>${date} - ${homeName}: ${homeScore} vs. ${awayName}: ${awayScore} </p>`;
 
 }
 
@@ -90,6 +90,7 @@ export function leikdagurTemplate(gameday) {
  */
 export function leikirTemplate(Gamedays) {
   const leikir = `
+  <h1> Leikjadagskrá </h1>
   <body>${Gamedays.map(leikdagurTemplate).join('')}</body>
   <a href="./index.html">Til baka</a>
   `;
@@ -111,6 +112,7 @@ export function stodurTemplate(points) {
   //console.log(points)
   //reikna stig og birta 
   const tafla = `
+  <h1> Stöðutaflan </h1>
   <div class="table">
   <table>
     <thead>
