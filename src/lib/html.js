@@ -23,7 +23,7 @@ export function template(title, content) {
  * @param {Array<IndexFile>} leikir list of departments
  * @returns {string} HTML string representing the index page
  */
-export function indexTemplate(leikir) {
+export function indexTemplate() {
   //index.html, forsíða sem hefur einhvern lýsingartexta (í versta falli lorem ipsum texta).
   const index = `
   <h1> Boltadeildin 2023 - 2024 </h1>
