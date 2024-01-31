@@ -18,13 +18,8 @@ export function template(title, content) {
 </html>`;
 }
 
-/**
- * Generate a HTML string for the index page.
- * @param {Array<IndexFile>} leikir list of departments
- * @returns {string} HTML string representing the index page
- */
 export function indexTemplate() {
-  //index.html, forsíða sem hefur einhvern lýsingartexta (í versta falli lorem ipsum texta).
+  // index.html, forsíða sem hefur einhvern lýsingartexta (í versta falli lorem ipsum texta).
   const index = `
   <h1> Boltadeildin 2023 - 2024 </h1>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
@@ -54,18 +49,13 @@ export function indexTemplate() {
   return template('Boltadeildin', index);
 }
 
-/**
- * 
- * @param {Object} game 
- * @returns 
- */
 export function leikurTemplate(date, game) {
   const homeName = game.home ? game.home.name : 'N/A';
   const awayName = game.away ? game.away.name : 'N/A';
   const homeScore = game.away ? game.away.score : 'N/A';
   const awayScore = game.away ? game.away.score : 'N/A';
 
-  //leikir.html, síða sem birtir alla leiki í deildinni, raðaða eftir dagsetningu leiks (elsta dagsetning efst).
+  // leikir.html, síða sem birtir alla leiki í deildinni, raðaða eftir dagsetningu leiks (elsta dagsetning efst).
   return `<p>${date} - ${homeName}: ${homeScore} vs. ${awayName}: ${awayScore} </p>`;
 
 }
@@ -73,11 +63,11 @@ export function leikurTemplate(date, game) {
 export function leikdagurTemplate(gameday) {
   // ítra í gegnum gameday.games
   gameday.games.map(leikurTemplate);
-  let ouput = [];
+  const ouput = [];
   gameday.games.forEach(game => {
     ouput.push(leikurTemplate(gameday.date, game));
   });
-  return ouput.join("");
+  return ouput.join('');
 }
 
 export function leikirTemplate(Gamedays) {
@@ -87,12 +77,12 @@ export function leikirTemplate(Gamedays) {
   <a href="./index.html">Til baka</a>
   `;
 
-  return template("Leikir", leikir)
+  return template('Leikir', leikir)
 }
 
 export function stadaTemplate(seat, index) {
-  let name = seat[0]
-  let point = seat[1]
+  const name = seat[0]
+  const point = seat[1]
   return `<tr>
   <td>${index + 1}</td>
   <td>${name}</td>
@@ -101,8 +91,8 @@ export function stadaTemplate(seat, index) {
 }
 
 export function stodurTemplate(points) {
-  //console.log(points)
-  //reikna stig og birta 
+  // console.log(points)
+  // reikna stig og birta 
   const tafla = `
   <h1> Stöðutaflan </h1>
   <div class="table">
@@ -122,7 +112,7 @@ export function stodurTemplate(points) {
 <p><a href="./index.html">Til baka</a></p>
 </div>
   `;
-  return template("Stöðutafla", tafla)
+  return template('Stöðutafla', tafla)
 }
 
 

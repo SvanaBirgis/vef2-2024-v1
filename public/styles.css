@@ -1,6 +1,6 @@
 :root {
     --font-base-size: 16px;
-    --font-base-family: Helvetica, Arial, sans-serif;
+    --font-base-family: helvetica, arial, sans-serif;
     --max-width: 56rem;
     --spacing: 1rem;
     --color-border: #ddd;
@@ -55,27 +55,16 @@ p {
 
 table {
     border-collapse: collapse;
-
     overflow-y: auto;
     width: 100%;
-}
-
-table td,
-table th {
-    border: 1px solid var(--color-border);
-    padding: calc(var(--spacing) / 2);
 }
 
 th {
     white-space: nowrap;
 }
 
-th button {
-    background-color: var(--color-border);
-    border: 0;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: calc(var(--spacing) / 2);
+table td,
+table th {
+    border: 1px solid var(--color-border);
     padding: calc(var(--spacing) / 2);
 }
