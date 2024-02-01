@@ -106,6 +106,7 @@ async function main() {
     //console.log(gameday)
   });
 
+
   var sortedPoints = Object.keys(pointsDict).map(function (key) {
     return [key, pointsDict[key]];
   });

@@ -54,9 +54,12 @@ export function leikurTemplate(date, game) {
   const awayName = game.away ? game.away.name : 'N/A';
   const homeScore = game.away ? game.away.score : 'N/A';
   const awayScore = game.away ? game.away.score : 'N/A';
+  const myDate = new Date(date);
+  const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+  const formattedDate = myDate.toLocaleDateString('en-US', options);
 
   // leikir.html, síða sem birtir alla leiki í deildinni, raðaða eftir dagsetningu leiks (elsta dagsetning efst).
-  return `<p>${date} - ${homeName}: ${homeScore} vs. ${awayName}: ${awayScore} </p>`;
+  return `<p>${formattedDate} - ${homeName}: ${homeScore} vs. ${awayName}: ${awayScore} </p>`;
 
 }
 
