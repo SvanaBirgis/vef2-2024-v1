@@ -32,7 +32,7 @@ describe('html', () => {
   </head>
   <body>
   <h1> Boltadeildin 2023 - 2024 </h1>
-  <p>Síðan inniheldur leikjadagskrá og stöðutöflu Boltadeildarinnar tímabilið 2023-2024</p>
+  <p>Síðan inniheldur leikjadagskrá og stöðutöflu Boltadeildarinnar tímabilið 2023-2024.</p>
   <p><a href="leikir.html">Leikir</a></p>
   <p><a href="stada.html">Stöðutafla</a></p>
   </body>
