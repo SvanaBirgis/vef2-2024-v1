@@ -18,115 +18,6 @@ const INPUT_DIR = './data';
 const OUTPUT_DIR = './dist';
 
 let teams;
-async function main() {
-  await createDirIfNotExists(OUTPUT_DIR);
-
-  const files = await readFilesFromDir(INPUT_DIR);
-  const potentialGamedays = [];
-  const legalGamedays = [];
-
-  for await (const file of files) {
-    let isTeams = false;
-    if (file.indexOf('gameday') < 0) {
-      if (file.indexOf('teams') >= 0) {
-        isTeams = true;
-      } else {
-        continue;
-      }
-    }
-    const fileContents = await readFile(file);
-
-    // parse-a file contents (lesa inn gogn og setja i breytur)
-    if (isTeams) {
-      teams = parseTeamsJson(fileContents);
-    } else {
-      let gameday = parseGameJson(fileContents);
-      if (gameday !== null && gameday?.date !== null && gameday?.games?.length !== 0) {
-        potentialGamedays.push(gameday);
-      }
-    }
-  }
-
-
-  for (let gameday of potentialGamedays) {
-    let date = gameday.date;
-    let legalGames = [];
-    for (let game of gameday.games) {
-      if (isGameLegal(game)) {
-        legalGames.push(game);
-      }
-    }
-    legalGamedays.push({
-      date: date,
-      games: legalGames
-    });
-
-  }
-  //console.log(legalGamedays);
-  for (let gameday of legalGamedays) {
-    //console.log(gameday.date)
-    gameday.games.forEach((game) => {
-      //console.log(game)
-    })
-  }
-
-  legalGamedays.sort(function (x, y) {
-    if (x.date < y.date) {
-      return -1;
-    }
-    if (x.date > y.date) {
-      return 1;
-    }
-    return 0;
-  });
-
-  // reikna stig fyrir hver lið
-  let pointsDict = {};
-  // ef legalGamedays[?].games[?].home.score !== legalGamedays[0].games[0].away.score 
-  legalGamedays.forEach(gameday => {
-    gameday.games.forEach(game => {
-      if (!pointsDict[game.home.name]) {
-        pointsDict[game.home.name] = 0
-      }
-      if (!pointsDict[game.away.name]) {
-        pointsDict[game.away.name] = 0
-      }
-      if (game.home.score > game.away.score) {
-        pointsDict[game.home.name] += 3
-      }
-      if (game.home.score < game.away.score) {
-        pointsDict[game.away.name] += 3
-      }
-      if (game.home.score == game.away.score) {
-        pointsDict[game.home.name] += 1
-        pointsDict[game.away.name] += 1
-      }
-      //console.log(game)
-    });
-    //console.log(gameday)
-  });
-
-
-  var sortedPoints = Object.keys(pointsDict).map(function (key) {
-    return [key, pointsDict[key]];
-  });
-
-  sortedPoints.sort(function (first, second) {
-    return second[1] - first[1];
-  });
-
-  await writeFile(join(OUTPUT_DIR, 'index.html'), indexTemplate(), {
-    flag: 'w+',
-  });
-
-  await writeFile(join(OUTPUT_DIR, 'leikir.html'), leikirTemplate(legalGamedays), {
-    flag: 'w+',
-  });
-
-  await writeFile(join(OUTPUT_DIR, 'stada.html'), stodurTemplate(sortedPoints), {
-    flag: 'w+',
-  });
-}
 
 function isTeamLegal(team) {
   return teams.includes(team);
@@ -156,6 +47,105 @@ function isGameLegal(game) {
     return false;
   }
   return true;
+}
+
+async function main() {
+  await createDirIfNotExists(OUTPUT_DIR);
+
+  const files = await readFilesFromDir(INPUT_DIR);
+  const potentialGamedays = [];
+  const legalGamedays = [];
+
+  for await (const file of files) {
+    let isTeams = false;
+    if (file.indexOf('gameday') < 0) {
+      if (file.indexOf('teams') >= 0) {
+        isTeams = true;
+      } else {
+        continue;
+      }
+    }
+    const fileContents = await readFile(file);
+
+    // parse-a file contents (lesa inn gogn og setja i breytur)
+    if (isTeams) {
+      teams = parseTeamsJson(fileContents);
+    } else {
+      const gameday = parseGameJson(fileContents);
+      if (gameday !== null && gameday?.date !== null && gameday?.games?.length !== 0) {
+        potentialGamedays.push(gameday);
+      }
+    }
+  }
+
+
+  for (const gameday of potentialGamedays) {
+    const {date} = gameday;
+    const legalGames = [];
+    for (const game of gameday.games) {
+      if (isGameLegal(game)) {
+        legalGames.push(game);
+      }
+    }
+    legalGamedays.push({
+      date,
+      games: legalGames
+    });
+
+  }
+
+  legalGamedays.sort((x, y) => {
+    if (x.date < y.date) {
+      return -1;
+    }
+    if (x.date > y.date) {
+      return 1;
+    }
+    return 0;
+  });
+
+  // reikna stig fyrir hver lið
+  const pointsDict = {};
+  // ef legalGamedays[?].games[?].home.score !== legalGamedays[0].games[0].away.score 
+  legalGamedays.forEach(gameday => {
+    gameday.games.forEach(game => {
+      if (!pointsDict[game.home.name]) {
+        pointsDict[game.home.name] = 0
+      }
+      if (!pointsDict[game.away.name]) {
+        pointsDict[game.away.name] = 0
+      }
+      if (game.home.score > game.away.score) {
+        pointsDict[game.home.name] += 3
+      }
+      if (game.home.score < game.away.score) {
+        pointsDict[game.away.name] += 3
+      }
+      if (game.home.score === game.away.score) {
+        pointsDict[game.home.name] += 1
+        pointsDict[game.away.name] += 1
+      }
+      // console.log(game)
+    });
+    // console.log(gameday)
+  });
+
+
+  const sortedPoints = Object.keys(pointsDict).map((key) => [key, pointsDict[key]]);
+
+  sortedPoints.sort((first, second) => second[1] - first[1]);
+
+  await writeFile(join(OUTPUT_DIR, 'index.html'), indexTemplate(), {
+    flag: 'w+',
+  });
+
+  await writeFile(join(OUTPUT_DIR, 'leikir.html'), leikirTemplate(legalGamedays), {
+    flag: 'w+',
+  });
+
+  await writeFile(join(OUTPUT_DIR, 'stada.html'), stodurTemplate(sortedPoints), {
+    flag: 'w+',
+  });
 }
 
 main().catch((error) => {
